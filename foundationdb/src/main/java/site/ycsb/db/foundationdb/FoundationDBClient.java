@@ -237,7 +237,9 @@ public class FoundationDBClient extends DB {
   }
 
   int dbFromKey(String key) {
-    return (key.hashCode() & Integer.MAX_VALUE) % dbs.length;
+    logger.error("dbs length {}", dbs.length);
+    //return (key.hashCode() & Integer.MAX_VALUE) % dbs.length;
+    return 0;
   }
 
   @Override
