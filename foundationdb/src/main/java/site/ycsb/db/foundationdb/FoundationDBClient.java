@@ -84,6 +84,8 @@ public class FoundationDBClient extends DB {
     String apiVersion = props.getProperty(API_VERSION, API_VERSION_DEFAULT);
     String clusterFileString = props.getProperty(CLUSTER_FILE, CLUSTER_FILE_DEFAULT);
     String[] clusterFiles = clusterFileString.split(",");
+    logger.error("clusterFileString: {}", clusterFileString);
+    logger.error("cluster file length: {}", clusterFiles.length);
     String dbBatchSize = props.getProperty(DB_BATCH_SIZE, DB_BATCH_SIZE_DEFAULT);
     dbName = props.getProperty(DB_NAME, DB_NAME_DEFAULT);
     String datacenterId = props.getProperty(DATACENTER_ID, DATACENTER_ID_DEFAULT);
