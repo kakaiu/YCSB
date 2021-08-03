@@ -238,6 +238,8 @@ public class FoundationDBClient extends DB {
 
   int dbFromKey(String key) {
     logger.error("dbs length {}", dbs.length);
+    logger.error("tmp index {}", key.hashCode());
+    logger.error("index {}", (key.hashCode() & Integer.MAX_VALUE) % dbs.length);
     //return (key.hashCode() & Integer.MAX_VALUE) % dbs.length;
     return 0;
   }
