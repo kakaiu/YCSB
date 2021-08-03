@@ -63,7 +63,7 @@ public class FoundationDBClient extends DB {
   private static final String SET_TRANSACTION_TRACE      = "foundationdb.settransactiontrace";
   private static final String SET_TRANSACTION_TRACE_DEFAULT = "";
   private static final String TRANSACTION_TRACE_FRACTION = "foundationdb.transactiontracefraction";
-  private static final String TRANSACTION_TRACE_FRACTION_DEFAULT = "1000";
+  private static final String TRANSACTION_TRACE_FRACTION_DEFAULT = "30000";
   private static final String DEBUG_TRANSACTION_IDENTIFIER = "foundationdb.debugtransactionidentifier";
   private static final String DEBUG_TRANSACTION_IDENTIFIER_DEFAULT = "test";
   private static final String TRACE_FORMAT               = "foundationdb.traceformat";
