@@ -84,8 +84,8 @@ public class FoundationDBClient extends DB {
     String apiVersion = props.getProperty(API_VERSION, API_VERSION_DEFAULT);
     String clusterFileString = props.getProperty(CLUSTER_FILE, CLUSTER_FILE_DEFAULT);
     String[] clusterFiles = clusterFileString.split(",");
-    logger.error("clusterFileString: {}", clusterFileString);
-    logger.error("cluster file length: {}", clusterFiles.length);
+    System.err.format("clusterFileString: %s", clusterFileString);
+    System.err.format("cluster file length: %d", clusterFiles.length);
     String dbBatchSize = props.getProperty(DB_BATCH_SIZE, DB_BATCH_SIZE_DEFAULT);
     dbName = props.getProperty(DB_NAME, DB_NAME_DEFAULT);
     String datacenterId = props.getProperty(DATACENTER_ID, DATACENTER_ID_DEFAULT);
@@ -239,9 +239,9 @@ public class FoundationDBClient extends DB {
   }
 
   int dbFromKey(String key) {
-    logger.error("dbs length {}", dbs.length);
-    logger.error("tmp index {}", key.hashCode());
-    logger.error("index {}", (key.hashCode() & Integer.MAX_VALUE) % dbs.length);
+    System.err.format("dbs length %d", dbs.length);
+    System.err.format("tmp index %d", key.hashCode());
+    System.err.format("index %d", (key.hashCode() & Integer.MAX_VALUE) % dbs.length);
     //return (key.hashCode() & Integer.MAX_VALUE) % dbs.length;
     return 0;
   }
