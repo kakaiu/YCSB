@@ -40,7 +40,7 @@ public class FoundationDBClient extends DB {
   private int[] batchCounts;
   private boolean setPriorityBatch;
   private boolean setTransactionTrace;
-  private int transactionTraceFraction;
+  private double transactionTraceFraction;
   private String debugTransactionIdentifier;
   private static final String API_VERSION                = "foundationdb.apiversion";
   private static final String API_VERSION_DEFAULT        = "630";
@@ -63,7 +63,7 @@ public class FoundationDBClient extends DB {
   private static final String SET_TRANSACTION_TRACE      = "foundationdb.settransactiontrace";
   private static final String SET_TRANSACTION_TRACE_DEFAULT = "";
   private static final String TRANSACTION_TRACE_FRACTION = "foundationdb.transactiontracefraction";
-  private static final String TRANSACTION_TRACE_FRACTION_DEFAULT = "10000";
+  private static final String TRANSACTION_TRACE_FRACTION_DEFAULT = "0.0001";
   private static final String DEBUG_TRANSACTION_IDENTIFIER = "foundationdb.debugtransactionidentifier";
   private static final String DEBUG_TRANSACTION_IDENTIFIER_DEFAULT = "test";
   private static final String TRACE_FORMAT               = "foundationdb.traceformat";
@@ -98,7 +98,7 @@ public class FoundationDBClient extends DB {
     logger.info("Cluster Files: {}\n", clusterFileString);
     setTransactionTrace = props.getProperty(SET_TRANSACTION_TRACE, SET_TRANSACTION_TRACE_DEFAULT).equals("true");
     transactionTraceFraction
-        = Integer.parseInt(props.getProperty(TRANSACTION_TRACE_FRACTION, TRANSACTION_TRACE_FRACTION_DEFAULT));
+        = Double.parseDouble(props.getProperty(TRANSACTION_TRACE_FRACTION, TRANSACTION_TRACE_FRACTION_DEFAULT));
     debugTransactionIdentifier = props.getProperty(DEBUG_TRANSACTION_IDENTIFIER, DEBUG_TRANSACTION_IDENTIFIER_DEFAULT);
 
     try {
@@ -126,7 +126,6 @@ public class FoundationDBClient extends DB {
 
       dbs = new Database[clusterFiles.length];
       for (int i = 0; i < clusterFiles.length; i++) {
-        System.err.println("clusterFile: "+clusterFiles[i]);
         dbs[i] = fdb.open(clusterFiles[i]);
         if (datacenterId != "") {
           logger.info("Datacenter ID: {}", datacenterId);
@@ -200,7 +199,7 @@ public class FoundationDBClient extends DB {
   private void batchInsert(int dbIndex) {
     try {
       dbs[dbIndex].run(tr -> {
-          if (setTransactionTrace && Math.random()<1.0/transactionTraceFraction) {
+          if (setTransactionTrace && Math.random()<transactionTraceFraction) {
             tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
             tr.options().setLogTransaction();
             tr.options().setServerRequestTracing();
@@ -272,7 +271,7 @@ public class FoundationDBClient extends DB {
           if (setPriorityBatch) {
             tr.options().setPriorityBatch();
           }
-          if (setTransactionTrace && Math.random()<1.0/transactionTraceFraction) {
+          if (setTransactionTrace && Math.random()<transactionTraceFraction) {
             tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
             tr.options().setLogTransaction();
             tr.options().setServerRequestTracing();
@@ -301,7 +300,7 @@ public class FoundationDBClient extends DB {
           if (setPriorityBatch) {
             tr.options().setPriorityBatch();
           }
-          if (setTransactionTrace && Math.random()<1.0/transactionTraceFraction) {
+          if (setTransactionTrace && Math.random()<transactionTraceFraction) {
             tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
             tr.options().setLogTransaction();
             tr.options().setServerRequestTracing();
@@ -335,7 +334,7 @@ public class FoundationDBClient extends DB {
           if (setPriorityBatch) {
             tr.options().setPriorityBatch();
           }
-          if (setTransactionTrace && Math.random()<1.0/transactionTraceFraction) {
+          if (setTransactionTrace && Math.random()<transactionTraceFraction) {
             tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
             tr.options().setLogTransaction();
             tr.options().setServerRequestTracing();
@@ -392,7 +391,7 @@ public class FoundationDBClient extends DB {
       if (setPriorityBatch) {
         tr.options().setPriorityBatch();
       }
-      if (setTransactionTrace && Math.random()<1.0/transactionTraceFraction) {
+      if (setTransactionTrace && Math.random()<transactionTraceFraction) {
         tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
         tr.options().setLogTransaction();
         tr.options().setServerRequestTracing();
