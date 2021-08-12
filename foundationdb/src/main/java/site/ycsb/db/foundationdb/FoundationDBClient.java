@@ -196,8 +196,8 @@ public class FoundationDBClient extends DB {
     return Status.OK;
   }
 
-  private void setupTransactionTraceOptions(Transaction tr, String debugTransactionIdentifier) {
-    tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
+  private void setupTransactionTraceOptions(Transaction tr, String trIdentifier) {
+    tr.options().setDebugTransactionIdentifier(trIdentifier);
     tr.options().setLogTransaction();
     tr.options().setServerRequestTracing();
   }
