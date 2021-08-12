@@ -197,9 +197,9 @@ public class FoundationDBClient extends DB {
   }
 
   private void setupTransactionTraceOptions(Transaction tr, String debugTransactionIdentifier) {
-      tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-      tr.options().setLogTransaction();
-      tr.options().setServerRequestTracing();
+    tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
+    tr.options().setLogTransaction();
+    tr.options().setServerRequestTracing();
   }
   private void batchInsert(int dbIndex) {
     try {
