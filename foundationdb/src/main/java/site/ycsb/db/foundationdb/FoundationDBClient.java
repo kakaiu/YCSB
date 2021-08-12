@@ -201,6 +201,7 @@ public class FoundationDBClient extends DB {
     tr.options().setLogTransaction();
     tr.options().setServerRequestTracing();
   }
+  
   private void batchInsert(int dbIndex) {
     try {
       dbs[dbIndex].run(tr -> {
