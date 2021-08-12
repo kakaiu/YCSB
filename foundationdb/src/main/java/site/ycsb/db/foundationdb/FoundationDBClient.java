@@ -196,13 +196,16 @@ public class FoundationDBClient extends DB {
     return Status.OK;
   }
 
+  private void setupTransactionTraceOptions(Transaction tr, String debugTransactionIdentifier) {
+      tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
+      tr.options().setLogTransaction();
+      tr.options().setServerRequestTracing();
+  }
   private void batchInsert(int dbIndex) {
     try {
       dbs[dbIndex].run(tr -> {
           if (setTransactionTrace && Math.random()<transactionTraceFraction) {
-            tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-            tr.options().setLogTransaction();
-            tr.options().setServerRequestTracing();
+            setupTransactionTraceOptions(tr, debugTransactionIdentifier);
           }
           for (int i = 0; i < batchCounts[dbIndex]; ++i) {
             String key = batchKeys[dbIndex].get(i);
@@ -272,9 +275,7 @@ public class FoundationDBClient extends DB {
             tr.options().setPriorityBatch();
           }
           if (setTransactionTrace && Math.random()<transactionTraceFraction) {
-            tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-            tr.options().setLogTransaction();
-            tr.options().setServerRequestTracing();
+            setupTransactionTraceOptions(tr, debugTransactionIdentifier);
           }
           tr.clear(Tuple.from(rowKey).pack());
           return null;
@@ -301,9 +302,7 @@ public class FoundationDBClient extends DB {
             tr.options().setPriorityBatch();
           }
           if (setTransactionTrace && Math.random()<transactionTraceFraction) {
-            tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-            tr.options().setLogTransaction();
-            tr.options().setServerRequestTracing();
+            setupTransactionTraceOptions(tr, debugTransactionIdentifier);
           }
           byte[] r = tr.get(Tuple.from(rowKey).pack()).join();
           return r;
@@ -335,9 +334,7 @@ public class FoundationDBClient extends DB {
             tr.options().setPriorityBatch();
           }
           if (setTransactionTrace && Math.random()<transactionTraceFraction) {
-            tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-            tr.options().setLogTransaction();
-            tr.options().setServerRequestTracing();
+            setupTransactionTraceOptions(tr, debugTransactionIdentifier);
           }
           byte[] row = tr.get(Tuple.from(rowKey).pack()).join();
           Tuple o = Tuple.fromBytes(row);
@@ -392,9 +389,7 @@ public class FoundationDBClient extends DB {
         tr.options().setPriorityBatch();
       }
       if (setTransactionTrace && Math.random()<transactionTraceFraction) {
-        tr.options().setDebugTransactionIdentifier(debugTransactionIdentifier);
-        tr.options().setLogTransaction();
-        tr.options().setServerRequestTracing();
+        setupTransactionTraceOptions(tr, debugTransactionIdentifier);
       }
       AsyncIterable<KeyValue> entryList = tr.getRange(Tuple.from(startRowKey).pack(), Tuple.from(endRowKey).pack(),
           recordcount > 0 ? recordcount : 0);
